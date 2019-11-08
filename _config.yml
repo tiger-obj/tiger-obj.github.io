@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: 
 description: ""
 keyword: ""
-url: "http://tiger-obj.github.io"              # your host, for absolute URL
+url: "https://tiger-obj.github.io"              # your host, for absolute URL
 baseurl: ""         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
@@ -39,7 +39,7 @@ gems: [jekyll-paginate]
 # Markdown settings
 # replace redcarpet to kramdown,
 # although redcarpet can auto highlight code, the lack of header-id make the catalog impossible, so I switch to kramdown
-# document: http://jekyllrb.com/docs/configuration/#kramdown
+# document: https://jekyllrb.com/docs/configuration/#kramdown
 markdown: kramdown
 kramdown:
   input: GFM                            # use Github Flavored Markdown !important
@@ -83,6 +83,6 @@ featured-condition-size: 1              # A tag will be featured if the size of 
 friends: [
     # {
     #     title: "No firedns yet.",
-    #     href: "http://huangxuan.me"
+    #     href: "https://huangxuan.me"
     # }
 ]
