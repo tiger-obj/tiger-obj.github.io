@@ -180,25 +180,72 @@ Again using bookstore xml
 
 ## XSLT
 
->XSL = Extensible Stylesheet Language
+>XSL = Extensible Stylesheet Language //
 >XSLT = Extensible Stylesheet Language (with) Transformations
 
 ### Rule-Based Transformations
+
 * Match template and replace
 * Recursively match templates
 * Extract values
 * Iteration (for-each)
-* Confitinoals (if)
-
-* Strange default/whitespace behavior
-* Implicit template priority
+* Conditionals (if)
+* Strange default/whitespace behavior, if there exists any elements that doesn't match any template we give. We need to use <xsl:template match="text()"/> to discard redudant text information. Namely we project(replace) text to spaces.
+* Implicit template priority. If there are multiple templates match, xsl processor chooses the "concreter" (the one with more specific decription) one. If there are multiple templates with same "descriptive power" match, processor chooses the second (later showing up) one.
 
 ### Briefly summary from Example
-* use template to match data(subtree) and do query.
-* multiple templates with same "descriptive power" match, processor chooses the second one.
-* multiple templates match, processor chooses the concreter one.
+
+Since lecture video is reletively fast while xslt is pretty complicated, we are going to study typical structure of XSLT using concrete query examples in post-deadline quiz.
+
+1. XSLT to return a list of department titles.
+  
+    ```xsl
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+        
+        <xsl:template match="Course[@Enrollment &gt; 500]">
+            <xsl:copy-of select="."/>
+        </xsl:template>
+        <xsl:template match="text()"/>
+
+        <xsl:template match="text()"/>
+
+    </xsl:stylesheet>
+    ```
+
+    Note:
+    1. First two and last lines are template of one xslt query. As we could see, xslt is exactly a file in xml format.
+    2. Multiple templates may exists in the body of stylesheet. They work like filter and excute "projection". copy-of or value-of will project those value with or without tag into results. If template has an **empty body** means that we want contains matching that template to be filtered out.
+    3. match="**a XPath expression**". Difference here comparing to canonical XPath expression are it is written as a string in quotes. Several escapes need to be applied instead, for example:
+
+    
+    |XPath|Match expr|example|
+    |---|---|---|
+    |>|\&gt;|<xsl:template match="Course[@Enrollment \&gt; 500]">|
+    |<|\&lt;|<xsl:template match="Course[@Enrollment \&lt; 500]">|
+    |"|\&quot; or '|<xsl:template match="country[contains(@name,\&quot;stan\&quot;)]"> <br>or<br><xsl:template match="country[contains(@name,'stan&')]"> |
+
+
+2. unlike SQL we need
+   
+   ```xsl
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:template match="*|@*|text()">
+        <xsl:copy>
+        <xsl:apply-templates select="*|@*|text()" />
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="country[@area &gt; 40000]"/>
+    <xsl:template match="country[count(city)=0]"/>
+    
+    </xsl:stylesheet>
+    ```
+
 * template matches all possible elements. necessary for (succeeding) ***recursively*** match templates:
-  ```xquery
+  
+  ```xsl
   <xsl:template match="*|@*|text()">
     <xsl:copy>
         <xsl:apply-templates select="*|@*|text()" />
