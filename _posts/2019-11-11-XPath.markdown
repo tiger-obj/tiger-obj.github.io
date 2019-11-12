@@ -58,11 +58,11 @@ Querying XML is not as matrue as Querying Relational (e.g. SQL)
   * **Book[Remark]** returns book that *has* a remark.
   * intersection of independent multiple full path conditions is **NOT** equivalent to  multiple conditions in a single full path expression.
 
-  * ***doc("BookstoreQ.xml")//Book[contains(Remar,"great")]/Title*** returns Titles of books with a remark containing "great".
+  * ***doc("BookstoreQ.xml")//Book[contains(Remark,"great")]/Title*** returns Titles of books with a remark containing "great".
   * ***doc("BookstoreQ.xml")//Magazine[Title=doc("BookstoreQ.xml")//Book/Title]*** returns all magazines where there's a book with the same tile.
   * ***doc("BookstoreQ.xml")/Booksore//\*[name(parent::\*)!+"Bookstore" and name(parent::\*) != "Book"]*** returns all elemennts whose parent is not "Bookstore" or "Book".
   * ***doc("BookstoreQ.xml")/Bookstore/(Book\|Magazine)[Title = following-sibling::\*/Title or Title = preceding-sibling::\*/Title]*** returns all books and magazines with non-unique titles (both side of each equality).
-  * ***XPath revolves around implicit existential quantification.*** means "A=B" in XPath is equivalent to $\exist elements \in A \space that \in B$. If we want a uniform equal relation: ***doc("BookstoreQ.xml")//Book[count(Authors/Author[contains(First_name,"J")=count(Authors/Author/First_Name)])]*** returns Books where every author's first name includes "J".
+  * ***XPath revolves around implicit existential quantification.*** means "A=B" in XPath is equivalent to $\exist elements \in A \space that \in B$. If we want a uniform equal relation: ***doc("BookstoreQ.xml")//Book[count(Authors/Author[contains(First_name,"J") = count(Authors/Author/First_Name)])]*** returns Books where every author's first name includes "J".
   * ***doc("BookstoreQ.xml")//Book[Authors/Author/Last_Name="Ullman" and count(Authors/Author[Last_Name = "Widom"])=0]/Title*** returns titles of books where "Ullman" is an author and "Widom" is not an author.
 
 ## XQuery
@@ -175,7 +175,6 @@ Again using bookstore xml
 ## XSLT
 
 >XSL = Extensible Stylesheet Language
-
 >XSLT = Extensible Stylesheet Language (with) Transformations
 
 ### Rule-Based Transformations
