@@ -148,12 +148,13 @@ Again using bookstore xml
     ```xquery
     for $b1 in doc("BookstoreQ.xml")/Bookstore/Book
     for $b2 in doc("BookstoreQ.xml")/Bookstore/Book
-    where $b1/Authors/Author/Last_Name = $b2/Authors/Author/Last_Name and $b1/Title < $b2/Title
+    where $b1/Authors/Author/Last_Name = $b2/Authors/Author/Last_Name 
+            and $b1/Title < $b2/Title
     return
-    <BookPair>
-        <Title1> {data{$b1/Title}} </Title1>
-        <Title2> {data{$b2/Title}} </Title2>
-    </BookPair>
+        <BookPair>
+            <Title1> {data{$b1/Title}} </Title1>
+            <Title2> {data{$b2/Title}} </Title2>
+        </BookPair>
     ```
 
 6. Invert Data: Authors with the books they've written. Assume Last Names are unique.
@@ -166,7 +167,8 @@ Again using bookstore xml
             <Author>
                 <First_Name> {$fn} </First_Name>
                 <Last_Name> {$ln} </Last_Name>
-                { for $b in doc("BookstoreQ.xml")/Bookstore/Book[Authors/Author/Last_Name=$ln]
+                {for $b in doc("BookstoreQ.xml")/Bookstore/
+                            Book[Authors/Author/Last_Name=$ln]
                 return  <Book>
                             {$b/@ISBN}{$b/Price}{$b/Edition}
                             {$b/Title}{$b/Remark}
@@ -180,7 +182,7 @@ Again using bookstore xml
 
 ## XSLT
 
->XSL = Extensible Stylesheet Language //
+>XSL = Extensible Stylesheet Language <br>
 >XSLT = Extensible Stylesheet Language (with) Transformations
 
 ### Rule-Based Transformations
@@ -199,7 +201,7 @@ Since lecture video is reletively fast while xslt is pretty complicated, we are 
 
 1. XSLT to return a list of department titles.
   
-    ```xsl
+    ```xml
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
         
@@ -221,14 +223,14 @@ Since lecture video is reletively fast while xslt is pretty complicated, we are 
     
     |XPath|Match expr|example|
     |---|---|---|
-    |>|\&gt;|<xsl:template match="Course[@Enrollment \&gt; 500]">|
-    |<|\&lt;|<xsl:template match="Course[@Enrollment \&lt; 500]">|
-    |"|\&quot; or '|<xsl:template match="country[contains(@name,\&quot;stan\&quot;)]"> <br>or<br><xsl:template match="country[contains(@name,'stan&')]"> |
+    |>|```&gt;```|\<xsl:template match="Course[@Enrollment \&gt; 500]">|
+    |<|```&lt;```|\<xsl:template match="Course[@Enrollment \&lt; 500]">|
+    |"|```&quot;``` or '|\<xsl:template match="country[contains(@name,```&quot;```stan```&quot;```)]"> <br>or<br>\<xsl:template match="country[contains(@name,'stan')]"> |
 
 
-2. unlike SQL we need
+2. Example of generic template, which matches all possible elements. It is necessary for (succeeding) ***recursively*** match templates:
    
-   ```xsl
+   ```xml
     <?xml version="1.0" encoding="ISO-8859-1"?>
     <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
     <xsl:template match="*|@*|text()">
@@ -236,20 +238,22 @@ Since lecture video is reletively fast while xslt is pretty complicated, we are 
         <xsl:apply-templates select="*|@*|text()" />
         </xsl:copy>
     </xsl:template>
-    
     <xsl:template match="country[@area &gt; 40000]"/>
     <xsl:template match="country[count(city)=0]"/>
-    
     </xsl:stylesheet>
     ```
+    Note:
+    1. "\*\|@\*\|text()" represents all children nodes, attributes and text-node children.
+    2. Using this methode we can copy whole document and add other templates as exeption of copying. Generic template at the beginning is necessary to keep the structure of querying result. By calling generic template, we enforce each succeeding template to be applied on each type of elments (nodes, attributes and so on) of the whole document.
 
-* template matches all possible elements. necessary for (succeeding) ***recursively*** match templates:
-  
-  ```xsl
-  <xsl:template match="*|@*|text()">
-    <xsl:copy>
-        <xsl:apply-templates select="*|@*|text()" />
-    </xsl:copy>
-  </xsl:template>
-  ```
-* can be used to transform xml to html.
+3. XSLT an also be used for transforming xml to html, e.g. intepreting query result in browser, more details can be found in lecture video. In the following is an example of using XSLT for \"transforming\" result into new structure (\<Stan>\</Stan> in this case).
+
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+    <xsl:template match="country[contains(@name,&quot;stan&quot;)]">       
+        <Stan><xsl:value-of select="./@name" /></Stan>
+    </xsl:template>
+    <xsl:template match="text()"/>
+</xsl:stylesheet>
+```
