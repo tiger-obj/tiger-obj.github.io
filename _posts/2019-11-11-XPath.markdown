@@ -38,13 +38,12 @@ Querying XML is not as matrue as Querying Relational (e.g. SQL)
 
 * Built-in functions 
   
-  |    |     |
   |----|-----|
   contains(S1,S2) | returns true if first string contains second string.
   name() | returns tag of current element in the path.
 
 * Navigation axes
-  |    |     |
+  
   |----|-----|
   |parent:: | returns parents, search up in the tree|
   |following-sibling:: | siblings after current element|
