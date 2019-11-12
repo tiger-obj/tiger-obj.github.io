@@ -29,21 +29,27 @@ Querying XML is not as matrue as Querying Relational (e.g. SQL)
 * Basic Constructs
   
 |Construct| function|
-|-----|-----|------|
+|-----|-----|
 |/|root element, separator|
 |name of element|"*" matches anything|
 |@A| A: attribute name|
 |//|match any descendant, including the element we currently are|
 |[c]| c is expression of condition, or a number indicates index|
 
-* Built-in functions
+* Built-in functions 
+  
+  |    |     |
+  |----|-----|
   contains(S1,S2) | returns true if first string contains second string.
-  name() | returns tag of current element in the path
+  name() | returns tag of current element in the path.
+
 * Navigation axes
-  parent:: | returns parents, search up in the tree
-  following-sibling:: | siblings after current element
-  descendant:: | same as //
-  self:: | current element
+  |    |     |
+  |----|-----|
+  |parent:: | returns parents, search up in the tree|
+  |following-sibling:: | siblings after current element|
+  |descendant:: | same as //|
+  |self:: | current element|
 
 * More Details:
   * XPath queries operate on and return sequence of elements
