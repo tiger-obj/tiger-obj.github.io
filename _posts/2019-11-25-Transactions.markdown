@@ -82,8 +82,8 @@ With higher Cucurrenccy and lower overhead under the price of lower consistency 
     </code>
 * Repeatable Read
   * A transaction may not perform dirty reads && An item read multiple times cannot change value. *But still does not guarantee global serializability.*
-  * Note: Insertions can be made by another transaction, even between two entire readings of a table. Those newly inserted tuples(withou locks) are called "phantom" tuples.
-  * I.e. we add lock for first read, which means we may have phantom typles between two reads of the same relation in a repeatable read transaction (because newly inserted tuples are not locked), but we won't have tuples disappear from mthe relation in between two reads of it (because we locked those tuples).
+  * Note: Insertions can be made by another transaction, even between two entire readings of a table. Those newly inserted tuples(without locks) are called "phantom" tuples.
+  * I.e. we add lock for first read, which means we may have phantom tuples between two reads of the same relation in a repeatable read transaction (because newly inserted tuples are not locked), but we won't have tuples disappear (e.g. deleted) from the relation in between two reads of it (since we locked those tuples).
   * <code type="sql">Set Transaction Isolation Level Repeatable Read;
     </code>
 * (serializability) **strongest** defined as before.
