@@ -52,7 +52,7 @@ tags:
   * Serializability $\Rightarrow$ constraints always hold.
 * **I**solation
   * Serializability: Transactions may be interleaved, but execution must be **equivalent** to **some** sequential (serial) order of all transactions. Note that only serialization is guaranteed instead of global order.
-  * I.e. there coulbe be interleaving between series of transactions from different client. However, each client see their series of transactions are executed in order.
+  * I.e. there could be interleaving between series of transactions from different client. However, each client see their series of transactions are executed in order.
   * Achieved by locking mechenisms.
 * **D**urability
   * If system crashes ***after*** transaction commits, all effects of transaction remain in database.
