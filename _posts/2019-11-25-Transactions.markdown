@@ -95,6 +95,7 @@ With higher Cucurrenccy and lower overhead under the price of lower consistency 
     </code>
 
 ### Summary
+
 | |dirty reads | nonrepeatable reads | phantoms|
 |---|---|---|---|
 |Read Uncommitted|Y | Y|Y
