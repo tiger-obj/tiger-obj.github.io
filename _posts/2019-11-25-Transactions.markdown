@@ -102,4 +102,5 @@ With higher Cucurrenccy and lower overhead under the price of lower consistency 
 |Read Committed| N| Y|Y
 |Repeatable Read|N |N |Y
 |Serializable|N |N |N
+
 >Y: allowed, N: not allowed
