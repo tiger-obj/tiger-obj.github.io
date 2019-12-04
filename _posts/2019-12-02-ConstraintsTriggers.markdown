@@ -196,8 +196,9 @@ begin
         and decision = 'Y';
 end;
 ```
-Note: last trigger can't be implemented by constraints
+>Note: trigger TooMany can't be implemented by constraints
 
+Other types of triggers:
 * Self-triggering, cycles by using ``pragma recursive_triggers = on`` in SQLite system, while a termination condition may be necessary.
 * Confilicts: The priority of triggers that activated at the same time, depends on their order of declaration.
 * Nested trigger invocations: in one perticular trigger the next action is activated only after trigger chain of previous action returns.
