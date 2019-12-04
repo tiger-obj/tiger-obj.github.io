@@ -16,9 +16,9 @@ tags:
 
 * Concurrent database access:
 
-  * Attributed/Tuple/Table-level or Mylti-statement inconsistency
-  * Concurrency Goal: Execute *sequence of SQL statements* so they appear to be running in *solation*
-  * Enable concurrency for Multiprocessor, Myltithreads and Asynchronous I/O and so on.
+  * Attributed/Tuple/Table-level or Multi-statement inconsistency
+  * Concurrency Goal: Execute *sequence of SQL statements* so they appear to be running in *isolation*
+  * Enable concurrency for Multiprocessor, Multithreads and Asynchronous I/O and so on.
 
 * Resilience to system failures:
   * System-Failure Goal: Guarantee all-or-nothing execution, regardleee of failures
@@ -39,11 +39,11 @@ tags:
 ### ACID Properties
 
 * **A**tomicity
-  * crusshed happen during one transaction (before commit).
+  * crushes happen during one transaction (before commit).
   * Each transaction is "all-or-nothing", never left half done.
   * Transaction Rollback (=Abort) undoes partial effects of transaction (however not all effects can be undone)
   * Can be system- or client-initialted
-  * Never hold open a transaction and then wait for arbitratyamouts of time. (Lock won't be released)
+  * Never hold open a transaction and then wait for arbitrary amouts of time. (Lock won't be released)
 * **C**onsistency
   * Each client, each transation:
     1. Can assume all contrains hold when transaction begins
@@ -52,7 +52,7 @@ tags:
   * Serializability $\Rightarrow$ constraints always hold.
 * **I**solation
   * Serializability: Transactions may be interleaved, but execution must be **equivalent** to **some** sequential (serial) order of all transactions. Note that only serialization is guaranteed instead of global order.
-  * I.e. there could be interleaving between series of transactions from different client. However, each client see their series of transactions are executed in order.
+  * I.e. there could be interleaving between series of transactions from different client. However, each client see that their series of transactions are executed in order.
   * Achieved by locking mechenisms.
 * **D**urability
   * If system crashes ***after*** transaction commits, all effects of transaction remain in database.
@@ -89,7 +89,8 @@ With higher Cucurrenccy and lower overhead under the price of lower consistency 
 * (serializability) **strongest** defined as before.
 
 ### Read Only transactions
-* helps system optimize performance
+
+* helps system optimizing performance
 * Independent of isolation level
 * <code type="sql">Set Transaction Read Only;
     </code>
