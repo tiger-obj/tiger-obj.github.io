@@ -1,0 +1,72 @@
+---
+layout:     post
+title:      "Views"
+subtitle:   "Notes of Introduction to Databases Stanford"
+date:       2019-12-12 17:36:17
+author:     "tiger-obj"
+header-img: "img/database_stanford/databases.png"
+catalog: true
+mathjax: true
+tags:
+    - Database
+    - Views
+---
+
+## Views
+
+Three-level vision of database:
+
+Physical-Conceptual-Logical, where as logical-level vision view represents a further abstraction of conceptual-level vision, i.e. relations.
+
+### Motivation
+
+* Hide some data from some users
+* Make some queries easier / more natural
+* Modularity of database access
+* *Real applications tend to use lots and lots of views.*
+
+### Defining and using views
+
+* View V=ViewQuery(R1,R2,...,Rn)
+* Schema of V is schema of query result
+* Query Q involving V, conveptually:
+    ```
+    V := ViewQuery(R1,R2,...,Rn)
+    Evaluate Q
+    ```
+* In reality, Q rewritten to use R1,...,Rn instead of V
+* Note: Ri could itself be a view
+
+SQL Syntax
+```sql
+Create View Vname As
+<Query>
+Create View Vname(A1,A2,...,An) As
+<Query>
+Drop Vname 
+(error in Postgre by dropping, 
+and error in SQLite and MySQL by invoking Vname later)
+```
+
+Note: views are not stored physically.
+
+### View Modifications
+
+Querying views
+
+* Once V defined, can reference V like any table
+* Queries involving V rewritten to use base tables
+
+Modifying views
+
+* For some users, for those views are the entire "view" of the database, we need make views-modification possible
+
+* Solution: Modifications to **V** rewritten to modify **base tables**. The rewritten (transformation) can usually be done without problem, however there are often many possible modification, and the system doesn't know which is intended by the user.
+  * Rewriting process specified explicitly by view creator
+    * Enabled by *Instead of* Triggers
+    * \+ Can handle all modifications
+    * \- But no guarantee of correctness (or meaningfull)
+  * <u>Restrict views + modifications</u> so that translation to base table modifications is meaningful and unambiguous
+    * Due to SQL standard, very rigorous
+    * \+ No user intervention
+    * \- However, restrictions are significant

@@ -50,12 +50,12 @@ tags:
    * A is called the "foreign key", Referential integrity is also called the Foreign key constraints.
    * B is usually required to be the primary key for table S or at least unique (for efficient implementation)
    * Multi-attribute foreign keys are allowed.
-   * Potentiall Violations occur: 
+   * Potentiall Violations occur: (since ($R.A \subseteq S.B$)) 
      * Insert into R
-     * Delete from S (``on delete set null/cascade``)
+     * Delete from S (on delete <u>set null</u>/<u>cascade</u>)
        * Special actions: Restrict(default generate error), Set Null, Cascade(delete entrys in R that has the reference in S)
      * Update R.A
-     * Update S.B (``on update set null/cascade``)
+     * Update S.B (on update <u>set null</u>/<u>cascade</u>)
        * Special actions: Restrict(default generate error), Set Null, Cascade(propagate update entrys in R that has the reference in S)
    * End of table definition: 
      * ``create table T(A int, B int, C int, primary key (A,B), foreign key (B,C) references T(A,B) on delete cascase)``
@@ -66,31 +66,37 @@ tags:
      * No CS student admits to Stanford
    * create table T(A int check(A not in (select A from T)));
      * Trying to enforce key constraint on T.A, *can't be executed*
-   * create table T(A int check((select count(distinct A) from T)=(select count(*) from T))); 
+   * create table T(A int check((select count(**distinct** A) from T)=(select count(*) from T))); 
      * Enforce A is a key for T
  * General assertion (not implemented in any DBMS)
  ``
  create assertion Key
  check((select count(distinct A) from T) = (select count(*) from T))
  ``
+
 #### Declaring and enforcing constraints
-  * Declaration
-    * With original schema - checked after bulk loading
-    * Or latar - checked on current Database
-  * Enforcement 
-    * Check after every "dangerous" modification
-    * Deferred constraint checking, check after every "dangerous" *transaction*
+
+* Declaration
+  * With original schema - checked after bulk loading
+  * Or latar - checked on current Database
+* Enforcement 
+  * Check after every "dangerous" modification
+  * Deferred constraint checking, check after every "dangerous" *transaction*
 
 ### Triggers (dynamic)
 
 * monitor database changes, check conditions and initiate actions
 * "Event-Condition-Action Rules": When event occurs, check condition; if true, do action.
-* E.g. enrollment>35000 $\Rightarrow$ reject all applicants, insert app with GPA>3.95 $\Rightarrow$ accept automatically, update sizeHS to be>7000 $\Rightarrow$ change to "wrong" and raise an arrow.
+* E.g. enrollment>35000 $\Rightarrow$ reject all applicants, insert app with GPA>3.95 $\Rightarrow$ accept automatically, update sizeHS to be>7000 $\Rightarrow$ change to "wrong" and raise an error.
+
 #### Motivation:
-  * Move monitoring logic from application into DBMS
-  * To enforce constraints, due to expressiveness and constraint "repair" logic
-  * Implementations vary significantly
+
+* Move monitoring logic from application into DBMS
+* To enforce constraints, due to expressiveness and constraint "repair" logic
+* Implementations vary significantly
+
 #### Triggers in SQL (SQL standard)
+
 > contents between () are explantation:
 
 ```sql
@@ -107,10 +113,11 @@ When ( condition )
 action
     (SQL statement)
 ```
+Tricky Issues
 * Row-level vs. Statement-level
   * New/Old Row and New/Old Table
-  * Before, Instead of
-* Multiple triggers activated at same time, which goes first?
+  * Triggers happend Before, Instead of (events)
+* Multiple triggers activated at same time, which goes first? (anwsered at the end of this article)
 * Trigger actions activating other triggrs(chaining)
   * Also self-triggering, cycles, nested invocations
 * Conditions in When vs. as part of action
@@ -200,5 +207,5 @@ end;
 
 Other types of triggers:
 * Self-triggering, cycles by using ``pragma recursive_triggers = on`` in SQLite system, while a termination condition may be necessary.
-* Confilicts: The priority of triggers that activated at the same time, depends on their order of declaration.
+* Confilicts: The priority of triggers that activated at the same time, *depends on their order of declaration.*
 * Nested trigger invocations: in one perticular trigger the next action is activated only after trigger chain of previous action returns.
