@@ -59,7 +59,7 @@ Querying views
 
 Modifying views
 
-* For some users, for those views are the entire "view" of the database, we need make views-modification possible
+* For some users, for those views are the entire "view" of the database, we need make views-modification possible for them.
 
 * Solution: Modifications to **V** rewritten to modify **base tables**. The rewritten (transformation) can usually be done without problem, however there are often many possible modification, and the system doesn't know which is intended by the user.
   * Rewriting process specified explicitly by view creator
