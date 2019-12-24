@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Views"
+title:      "Views and Autorization"
 subtitle:   "Notes of Introduction to Databases Stanford"
 date:       2019-12-12 17:36:17
 author:     "tiger-obj"
@@ -10,6 +10,7 @@ mathjax: true
 tags:
     - Database
     - Views
+    - Authorization
 ---
 
 ## Views
@@ -160,3 +161,50 @@ Modifications on materialized views
   * Also "incremental mantenance" versus full recomputation.
 
 Database systems sometimes do automatic query rewriting to use materialized views
+
+## Database Authorization
+
+### Motivation
+
+* Make sure users see only the data they're supposed to see
+* Gard the database against modifications by malicious users
+
+> SQL Injection and other system security issues will not covered here
+
+### Examples
+
+Users have privileges and can only operate on data for which they are authorized, for example:
+
+```sql
+Update Apply
+Set dec='Y'
+where sID In (Select sID From Student Where GPA>3.9)
+```
+
+Privileges needed:
+
+* Apply: update(dec), select(sID)
+* Stduent: select(sID,GPA)
+
+In order to provide privileges on specific attributes of some relations, we need to get use of views. Must have updatable views to provide modification privileges through views.
+
+### Obtaining Privileges
+
+* Relation creator is *owner*
+* Owner has all privileges and *may grant privileges*
+
+```sql
+Grant privs On R To users
+[With Grant Option]
+```
+where privs is like "select(sID), Delete", users could be public, Option could grant same or lesser to others.
+
+### Revoking Privileges
+
+```sql
+Revoke privs On R From users
+[Cascade | Restrict]
+```
+
+* Cascade: revoke all privileges granted by its descendents. Also revoke privileges granted fro mprivileges being revoked(transitively), unless also granted from another source.
+* Restrict: Disallow if Cascade would revoke any other privileges. For transitive cases, need to revoke privileges manualy bottom-up through that graph. As default if not explicitly specified.

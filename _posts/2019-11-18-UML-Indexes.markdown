@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Unified Modeling Language and Indexes"
+title:      "Unified Modeling Language (UML) and Indexes"
 subtitle:   "Notes of Introduction to Databases Stanford"
 date:       2019-11-18 18:57:09
 author:     "tiger-obj"
